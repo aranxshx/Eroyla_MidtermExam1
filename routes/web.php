@@ -14,9 +14,11 @@ use App\Http\Controllers\PortfolioController;
 |
 */
 
-Route::get('/', [PortfolioController::class, 'home']);
-Route::get('/skills', [PortfolioController::class, 'skills']);
-Route::get('/projects', [PortfolioController::class, 'projects']);
-Route::get('/experiences', [PortfolioController::class, 'experiences']);
-Route::get('/contacts', [PortfolioController::class, 'contacts']);
+Route::middleware('portfolio.access')->group(function () {
+    Route::get('/', [PortfolioController::class, 'home']);
+    Route::get('/skills', [PortfolioController::class, 'skills']);
+    Route::get('/projects', [PortfolioController::class, 'projects']);
+    Route::get('/experiences', [PortfolioController::class, 'experiences']);
+    Route::get('/contacts', [PortfolioController::class, 'contacts']);
+});
 

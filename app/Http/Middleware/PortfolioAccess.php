@@ -15,7 +15,15 @@ class PortfolioAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        \Log::info('Portfolio accessed:' . now());
+        // Log access to a txt file
+        $logMessage = '[' . now() . '] ' . $request->ip() . ' accessed ' . $request->path() . PHP_EOL;
+        file_put_contents(storage_path('logs/portfolio_access.txt'), $logMessage, FILE_APPEND);
+
+        // Simple condition: block access if ?locked=true is passed
+        if ($request->query('locked') === 'true') {
+            return response('Portfolio is currently unavailable. Please try again later.', 403);
+        }
+
         return $next($request);
     }
 }
